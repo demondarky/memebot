@@ -1,0 +1,67 @@
+spring:
+  application:
+    name: solana-trading-bot
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+  datasource:
+    url: jdbc:h2:mem:tradingbot
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+      indent-output: true
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+bot:
+  solana:
+    network: mainnet
+    rpc-endpoint: https://api.mainnet-beta.solana.com
+    ws-endpoint: wss://api.mainnet-beta.solana.com
+  
+  trading:
+    trade-duration-minutes: 20
+    max-trades-per-day: 10
+    default-buy-amount-sol: 0.5
+    take-profit-percentage: 100
+    stop-loss-percentage: -50
+    slippage-tolerance-percentage: 5
+  
+  scanning:
+    pump-fun-endpoint: https://pumpfun.api.example.com
+    scan-interval-seconds: 30
+    min-liquidity-sol: 10
+    max-liquidity-sol: 1000
+  
+  risk:
+    enable-rug-detection: true
+    enable-bubble-maps: true
+    min-holder-count: 100
+    max-top-holder-percentage: 30
+
+logging:
+  level:
+    root: INFO
+    com.memebot: DEBUG
+    org.springframework.web: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/bot.log
+    max-size: 10MB
+    max-history: 10
